@@ -1,5 +1,6 @@
 import cv2
 import os
+import sklearn
 from flask import Flask,request,render_template
 from datetime import date
 from datetime import datetime
@@ -39,6 +40,7 @@ def totalreg():
 
 #### extract the face from an image
 def extract_faces(img):
+    # Convert image BGR(Blue green red) to RGB(Red green blue)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     face_points = face_detector.detectMultiScale(gray, 1.3, 5)
     return face_points
@@ -116,7 +118,7 @@ def start():
             add_attendance(identified_person)
             cv2.putText(frame,f'{identified_person}',(30,30),cv2.FONT_HERSHEY_SIMPLEX,1,(255, 0, 20),2,cv2.LINE_AA)
         cv2.imshow('Attendance',frame)
-        if cv2.waitKey(1)==27:
+        if cv2.waitKey(1) & 0XFF == ord('e'):
             break
     cap.release()
     cv2.destroyAllWindows()
